@@ -1,6 +1,7 @@
 ﻿using BusinessLogicLayer.Helpers.Models;
 using BusinessLogicLayer.Helpers.Models.Errors;
 using System;
+using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.Helpers.Extensions {
 	public static class ServiceResultExtensions {
