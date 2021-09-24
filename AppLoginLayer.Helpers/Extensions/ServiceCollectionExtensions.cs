@@ -1,4 +1,5 @@
-﻿using AppLoginLayer.Helpers.Models.Configurations;
+﻿using AppLoginLayer.Helpers.Interfaces;
+using AppLoginLayer.Helpers.Models.Configurations;
 using AppLoginLayer.Helpers.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,7 +37,7 @@ namespace AppLoginLayer.Helpers.Extensions {
 							var jwtSecurityToken = handler.ReadToken(accessToken.ToString().Substring(7)) as JwtSecurityToken;
 							if ((DateTime.UtcNow - jwtSecurityToken.ValidTo).Minutes > authenticationTokenOptions.LifetimeMinutes) return Task.CompletedTask;
 
-							var tokenService = context.HttpContext.RequestServices.GetRequiredService<SecurityTokenService>();
+							var tokenService = context.HttpContext.RequestServices.GetRequiredService<ISecurityTokenService>();
 							var refreshedSecurityToken = tokenService.GenerateJwtToken(jwtSecurityToken.Claims);
 							context.Response.Headers[authorizationKey] = $"bearer {handler.WriteToken(refreshedSecurityToken)}";
 							context.Response.Headers[SecurityTokenService.AuthorizationExpiresKey] = refreshedSecurityToken.ValidTo.ToString();

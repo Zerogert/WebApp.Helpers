@@ -1,6 +1,8 @@
-﻿namespace AppLoginLayer.Helpers.Models {
+﻿using System.Collections.Generic;
+
+namespace AppLoginLayer.Helpers.Models {
 	public class PaginationResponse<T> {
-		public T Data { get; set; }
+		public ICollection<T> Data { get; set; }
 		public int Index { get; set; }
 		public int PageSize { get; set; }
 		public int PageTotal { get; set; }
