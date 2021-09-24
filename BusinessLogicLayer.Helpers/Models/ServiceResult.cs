@@ -1,4 +1,5 @@
 ﻿using BusinessLogicLayer.Helpers.Models.Errors;
+using System;
 
 namespace BusinessLogicLayer.Helpers.Models {
 	public class ServiceResult {
