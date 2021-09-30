@@ -5,9 +5,9 @@ namespace AppLoginLayer.Helpers.Models {
 		public ICollection<T> Data { get; set; }
 		public int Index { get; set; }
 		public int PageSize { get; set; }
-		public int PageTotal { get; set; }
-		public int ItemCount { get; set; }
-		public bool IsLastPage => (Index + 1) >= PageTotal;
+		public int PagesTotal { get; set; }
+		public int ItemsTotal { get; set; }
+		public bool IsLastPage => (Index + 1) >= PagesTotal;
 
 	}
 }

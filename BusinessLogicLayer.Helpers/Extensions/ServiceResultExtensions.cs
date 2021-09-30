@@ -19,6 +19,16 @@ namespace BusinessLogicLayer.Helpers.Extensions {
 			return result;
 		}
 
+		public static async Task<ServiceResult<TIn>> RunServiceAsync<TIn, TOut>(this ServiceResult<TIn> result, Func<TIn, Task<ServiceResult<TOut>>> service, Action<TIn, TOut> action = null, Func<TIn, bool> condition = null) where TIn : class where TOut: class
+		{
+			if (!result.Succeeded) return result;
+			if (condition!=null && !condition.Invoke(result.Data)) return result;
+			var runServiceResult = await service.Invoke(result.Data);
+			if (runServiceResult.Succeeded && action != null) action.Invoke(result.Data, runServiceResult.Data);
+			if (!runServiceResult.Succeeded) return ServiceResult<TIn>.Fail(runServiceResult.Error);
+			return result;
+		} 		
+
 		public static async Task<ServiceResult<TIn>> RunActionAsync<TIn>(this ServiceResult<TIn> result, Func<TIn, Task> resultRun) where TIn : class {
 			if (!result.Succeeded) return result;
 			await resultRun.Invoke(result.Data);
