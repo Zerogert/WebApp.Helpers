@@ -6,12 +6,10 @@ namespace BusinessLogicLayer.Helpers.Models.Errors {
 		public string Type { get; private set; }
 		public Dictionary<string, string> AdditionalData { get; set; }
 		public BaseError InnerError { get; set; }
-		public Exception Exception { get; set; }
 
-		public BaseError(string message, BaseError innerError = null, Exception exception = null) {
+		public BaseError(string message, BaseError innerError = null, Exception exception = null):base(message, exception) {
 			InnerError = innerError;
-			Exception = exception;
-			Type = GetType().Name.Replace("Error", "").Replace("Exception", "");
+			Type = GetType().Name.ToString().Replace("Error", "").Replace("Exception", "");
 		}
 
 		public BaseError(string type, string message, BaseError innerError = null, Exception exception = null) : this(message, innerError, exception) {
