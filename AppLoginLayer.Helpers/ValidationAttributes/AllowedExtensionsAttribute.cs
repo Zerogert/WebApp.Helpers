@@ -10,10 +10,9 @@ namespace AppLoginLayer.Helpers.ValidationAttributes {
 	/// <summary>
 	/// Specifies allowed extensions for file in property.
 	/// <remarks>
-	/// This attribute may be used only for IFormFile
+	/// This attribute may be used only for IFormFile or IFormFileCollection
 	/// </remarks>
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 	public class AllowedExtensionsAttribute : ValidationAttribute {
 
 		private readonly string[] _allowedExtensions;
@@ -36,19 +35,23 @@ namespace AppLoginLayer.Helpers.ValidationAttributes {
 		/// <param name="value">The object to validate.</param>
 		/// <returns><c>true</c> if the value is null or less than or equal to the specified maximum length, otherwise <c>false</c></returns>
 		public override bool IsValid(object value) {
-			var file = value as IFormFile;
-
-			if (file == null) {
-				return true;
+			switch (value) {
+				case IFormFile file:
+					return IsValidFile(file);
+				case IFormFileCollection files:
+					return files.All(f => IsValidFile(f));
+				default:
+					return true;
 			}
-
-			var extension = Path.GetExtension(file.FileName);
-
-			return _allowedExtensions.Contains(extension);
 		}
 
 		public override string FormatErrorMessage(string name) {
 			return "AllowedExtensionsError*|*" + string.Format(CultureInfo.CurrentCulture, ErrorMessageString, name, string.Join('|', _allowedExtensions));
+		}
+
+		private bool IsValidFile(IFormFile file) {
+			var extension = Path.GetExtension(file.FileName);
+			return _allowedExtensions.Contains(extension);
 		}
 	}
 }
