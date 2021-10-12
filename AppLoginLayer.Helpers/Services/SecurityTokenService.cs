@@ -19,9 +19,13 @@ namespace AppLoginLayer.Helpers.Services {
 		}
 
 		public JwtSecurityToken GenerateJwtToken(IEnumerable<Claim> claims) {
+			return GenerateJwtToken(claims, _tokenOptions.LifetimeMinutes);
+		}
+
+		public JwtSecurityToken GenerateJwtToken(IEnumerable<Claim> claims, int lifeTimeMinutes) {
 			ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme, ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
 			var now = DateTime.UtcNow;
-			var expires = now.Add(TimeSpan.FromMinutes(_tokenOptions.LifetimeMinutes));
+			var expires = now.Add(TimeSpan.FromMinutes(lifeTimeMinutes));
 			return new JwtSecurityToken(_tokenOptions.Issuer, _tokenOptions.Audience,
 				notBefore: now,
 				claims: claimsIdentity.Claims,
