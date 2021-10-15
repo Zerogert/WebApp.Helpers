@@ -1,5 +1,6 @@
 ﻿using BusinessLogicLayer.Helpers.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ePlaces.DataLayer.Extensions {
@@ -8,6 +9,10 @@ namespace ePlaces.DataLayer.Extensions {
 		public static IQueryable<T> Pagination<T>(this IQueryable<T> query, int indexPage, int pageSize = 20) {
 			var skipCount = indexPage * pageSize;
 			return query.Skip(skipCount).Take(pageSize);
+		}
+
+		public static IEnumerable<T> Pagination<T>(this IEnumerable<T> query, int indexPage, int pageSize = 20) {
+			return query.AsQueryable().Pagination(indexPage, pageSize);
 		}
 
 		public static PaginationResult<T> ToPaginationResult<T>(this IQueryable<T> query, int indexPage, int pageSize = 20) {
@@ -22,6 +27,10 @@ namespace ePlaces.DataLayer.Extensions {
 				PagesTotal = pagesTotal
 			};
 			return paginationResult;
+		}
+
+		public static PaginationResult<T> ToPaginationResult<T>(this IEnumerable<T> query, int indexPage, int pageSize = 20) {
+			return query.AsQueryable().ToPaginationResult(indexPage, pageSize);
 		}
 	}
 }
