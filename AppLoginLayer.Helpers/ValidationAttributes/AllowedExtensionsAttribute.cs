@@ -13,6 +13,7 @@ namespace AppLoginLayer.Helpers.ValidationAttributes {
 	/// This attribute may be used only for IFormFile or IFormFileCollection
 	/// </remarks>
 	/// </summary>
+	[AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
 	public class AllowedExtensionsAttribute : ValidationAttribute {
 
 		private readonly string[] _allowedExtensions;

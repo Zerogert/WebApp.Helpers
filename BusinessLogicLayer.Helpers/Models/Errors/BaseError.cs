@@ -15,6 +15,5 @@ namespace BusinessLogicLayer.Helpers.Models.Errors {
 		public BaseError(string type, string message, BaseError innerError = null, Exception exception = null) : this(message, innerError, exception) {
 			Type = type;
 		}
-
 	}
 }
